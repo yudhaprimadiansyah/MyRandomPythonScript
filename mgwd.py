@@ -1,0 +1,1 @@
+print "fdf2dff0ced9f6f3ffced4f6f9f6c0e1f6d0f2e5ddf6cef9d6f1fcd0f6fcc2e1c1e2".decode('hex')

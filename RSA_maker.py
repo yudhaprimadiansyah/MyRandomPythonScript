@@ -1,0 +1,6 @@
+file = open("200rsa", 'r')
+data = file.read().rstrip()
+binary = bin(int(data))
+file2.open("bindata", 'w')
+file2.write(binary)
+file2.close()

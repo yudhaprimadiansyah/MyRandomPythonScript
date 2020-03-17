@@ -1,0 +1,35 @@
+#!/usr/bin/python  
+import ContinuedFractions, Arithmetic, RSAvulnerableKeyGenerator
+import time  
+import sys  
+import base64  
+import binascii  
+import gmpy  
+import sympy  
+import math  
+import fractions  
+import struct  
+sys.setrecursionlimit(100000)  
+
+n=380654536359671023755976891498668045392440824270475526144618987828344270045182740160077144588766610702530210398859909208327353118643014342338185873507801667054475298636689473117890228196755174002229463306397132008619636921625801645435089242900101841738546712222819150058222758938346094596787521134065656721069  
+e=165528674684553774754161107952508373110624366523537426971950721796143115780129435315899759675151336726943047090419484833345443949104434072639959175019000332954933802344468968633829926100061874628202284567388558408274913523076548466524630414081156553457145524778651651092522168245814433643807177041677885126141  
+c=0x01d28a9b0563afd0a615b5356015735d4df9b87164ab61f9a66905484bc152a405ce38ca83a2cca2e15ae4b3ec08eae20409263e672fc43f0a51346d940f546d7c9a25d935ca3c2f5401a08dddea575d119a185185cccd0d584a0f15b442457d6f95f9ee12c331f881dc8a4f8c0e0e61cc5b8bb2682b9eac076cc08efc983b4f48
+def hack_RSA(e,n):  
+  
+ frac = ContinuedFractions.rational_to_contfrac(e, n)  
+ convergents = ContinuedFractions.convergents_from_contfrac(frac)  
+ for (k,d) in convergents:  
+   #check if d is actually the key  
+   if k!=0 and (e*d-1)%k == 0:  
+     phi = (e*d-1)//k  
+     s = n - phi + 1  
+     # check if the equation x^2 - s*x + n = 0  
+     # has integer roots  
+     discr = s*s - 4*n  
+     if(discr>=0):  
+       t = Arithmetic.is_perfect_square(discr)  
+       if t!=-1 and (s+t)%2==0:  
+         return d  
+hacked_d = hack_RSA(e, n)  
+m = pow(c, hacked_d, n)   
+print("%0512x" %m).decode("hex") 
